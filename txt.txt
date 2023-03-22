@@ -1,0 +1,11 @@
+Mars Mips download
+
+
+Anotações:
+
+memoria:
+
+stack
+heap
+data
+txt
