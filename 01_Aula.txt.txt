@@ -1,0 +1,19 @@
+Mars Mips download
+
+
+Anotações:
+
+memoria:
+
+stack
+heap
+data
+txt
+
+run -> save+f3
+
+Memória de instruções ex: lui
+Registradores ex: $s1
+Memória de dados ex: variáveis
+
+Para levar da memória de dados para os registradores -> load
