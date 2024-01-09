@@ -22,11 +22,24 @@
 	slt $t1,$t0,$zero # t0<0 (negativo) grava 1 em t1
 	li $t2,1
 	beq $t1,$t2,_negativo
+	beq $t0,$zero,_zero
+	bgt $t0,$zero,_positivo
 	
 _negativo:
 	li $v0,4
 	la $a0,msg2
 	syscall
+
+_zero:
+	li $v0,4
+	la $a0,msg3
+	syscall
+
+_positivo:
+	li $v0,4
+	la $a0,msg1
+	syscall
+
 	
 	
 	
