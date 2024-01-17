@@ -1,9 +1,4 @@
 .include "macros.asm"
-.include "initializeBoard.asm"
-.include "plantBombs.asm"
-.include "play.asm"
-.include "printBoard.asm"
-.include "checkVictory.asm"
 
 .data
 	msg_row:  		.asciiz "Enter the row for the move: "
@@ -12,15 +7,18 @@
  	msg_lose:  		.asciiz "Oh no! You hit a bomb! Game over.\n"
 	msg_invalid:  .asciiz "Invalid move. Please try again.\n"
 
-.globl main 	 	
+	 	
 .text
+.globl main 
 
 main:
+
   addi $sp, $sp, -256 	# board; 
   li $s1, 1	     				# int gameActive = 1;
   move $s0, $sp
   move $a0, $s0 
   
+  #inicializando matriz 8*8
   jal inicialializeBoard # initializeBoard(board);
   move $a0, $s0 				
   jal plantBombs 				 # placeBombs(board);

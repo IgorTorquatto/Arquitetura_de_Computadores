@@ -1,5 +1,5 @@
 	.text
-	.globl __start #faz com que essa label seja visível a todos os arquivos na mesma pasta desse arquivo
+	.globl __start  #faz com que essa label seja visível a todos os arquivos na mesma pasta desse arquivo
 __start:
 	jal main #salta para a main e salv a em $ra o endereço da instrução seguinte
 	nop
