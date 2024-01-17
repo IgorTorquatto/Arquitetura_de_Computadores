@@ -1,4 +1,4 @@
-
+.include "macros.asm"
 
 .globl play
 

@@ -1,4 +1,4 @@
-
+.include "macros.asm"
 
 .globl printBoard
 
@@ -61,7 +61,7 @@ printBoard:
   syscall
     
   li $t0, 0
-  begin_for_i_pb_2:							# for (int i = 0; i < SIZE; ++i) {
+  begin_for_i_pb:							# for (int i = 0; i < SIZE; ++i) {
   li $t7, SIZE
   bge $t0, $t7, end_for_i_pb
   li $v0, 1
@@ -130,7 +130,7 @@ printBoard:
   
   addi $t0, $t0, 1 
   j begin_for_i_pb
-  end_for_i_pb_2:
   
+  end_for_i_pb:
   restore_context  
   jr $ra

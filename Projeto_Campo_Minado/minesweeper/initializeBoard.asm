@@ -1,3 +1,5 @@
+.include "macros.asm"
+
 .text
 .globl inicialializeBoard
 
