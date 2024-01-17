@@ -1,4 +1,5 @@
 .include "macros.asm"
+
 .globl initializeBoard 
 
 initializeBoard :

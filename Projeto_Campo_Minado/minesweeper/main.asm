@@ -1,4 +1,9 @@
 .include "macros.asm"
+.include "initializeBoard.asm"
+.include "plantBombs.asm"
+.include "play.asm"
+.include "printBoard.asm"
+.include "checkVictory.asm"
 
 .data
 	msg_row:  		.asciiz "Enter the row for the move: "

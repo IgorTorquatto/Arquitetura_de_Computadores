@@ -1,14 +1,15 @@
 .include "macros.asm"
-
+.include "initializeBoard.asm"
 .data
 	msg_row:  		.asciiz "Enter the row for the move: "
  	msg_column:  	.asciiz "Enter the column for the move: "
  	msg_win:  		.asciiz "Congratulations! You won!\n"
  	msg_lose:  		.asciiz "Oh no! You hit a bomb! Game over.\n"
 	msg_invalid:  .asciiz "Invalid move. Please try again.\n"
-
-.globl main 	 	
+ 	 	
 .text
+
+.globl main
 
 main:
   addi $sp, $sp, -256 	# board; 
