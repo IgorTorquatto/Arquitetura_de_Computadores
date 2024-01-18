@@ -16,7 +16,7 @@ main:
   addi $sp, $sp, -256 	# board; 
   li $s1, 1	     				# int gameActive = 1;
   move $s0, $sp
-  move $a0, $s0 
+  move $a0, $s0 #passa a board como argumento para realizar a função
   
   #inicializando matriz 8*8
   jal inicialializeBoard # initializeBoard(board);
@@ -35,7 +35,7 @@ main:
   
   li $v0, 5  						# scanf("%d", &row);
   syscall
-  move $s2, $v0
+  move $s2, $v0 #Em $s2 fica o numero da row digitada pelo usuário
   
   la $a0, msg_column
   li $v0, 4 						# printf("Enter the column for the move: ");
@@ -44,7 +44,7 @@ main:
   li $v0, 5 						# scanf("%d", &column);
 
   syscall
-  move $s3, $v0 
+  move $s3, $v0  #Em $s3 fica o numero da column digitada pelo usuário
   
   li $t0, SIZE
   blt $s2, $zero, else_invalid	#if (row >= 0 && row < SIZE && column >= 0 && column < SIZE) {
@@ -56,17 +56,22 @@ main:
   sw $s0, 0 ($sp)
   move $a0, $s2
   move $a1, $s3
-  jal play
+  move $a2, $s0 # ADICIONANDO A BOARD
+  jal play #PRIMEIRA PARTE DE IMPLEMENTAÇÃO , $A0 TEM O NUMERO DA LINHA E $A1 O NUMERO DA COLUNA DO ELEMENTO, $A2 A BOARD
+  
+  # Se o valor de retorno do $v0 for igual a 0 é porque o jogo acabou e as seguintes intruções serão executadas, mostrando a mensagem de game over
+  #Porém se o valor de retorno de $v0 não for 0 então pulará para else_if_main na instrução bne
+  
   addi $sp, $sp, 4
   bne $v0, $zero, else_if_main 	# if (!play(board, row, column)) {
-    li $s1, 0										# gameActive = 0;
+  li $s1, 0										# gameActive = 0;
   la $a0, msg_lose							# printf("Oh no! You hit a bomb! Game over.\n");
   li $v0, 4
   syscall
   j end_if_main
   
  else_if_main:
- 	move $a0, $s0
+  move $a0, $s0
   jal checkVictory							# else if (checkVictory(board)) {
   beq $v0, $zero, end_if_main
   la $a0, msg_win								# printf("Congratulations! You won!\n");
@@ -74,12 +79,15 @@ main:
   syscall
   li $s1, 0											# gameActive = 0; // Game ends
   j end_if_main 
+  
   else_invalid:		
   la $a0, msg_invalid						# printf("Invalid move. Please try again.\n");
   li $v0, 4
   syscall
+  
   end_if_main:
   j begin_while
+  
   end_while:
   move $a0, $s0 
   li $a1, 1
