@@ -1,6 +1,0 @@
-# depslib dependency file v1.0
-1705170187 source:c:\users\softex\documents\disciplinas ufca\arquitetura_de_computadores\projeto_campo_minado(teste)\campo_minado_c\main.c
-	<stdio.h>
-	<stdlib.h>
-	<time.h>
-

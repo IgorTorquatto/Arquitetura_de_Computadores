@@ -1,15 +1,14 @@
 .include "macros.asm"
-.include "initializeBoard.asm"
+
 .data
 	msg_row:  		.asciiz "Enter the row for the move: "
  	msg_column:  	.asciiz "Enter the column for the move: "
  	msg_win:  		.asciiz "Congratulations! You won!\n"
  	msg_lose:  		.asciiz "Oh no! You hit a bomb! Game over.\n"
 	msg_invalid:  .asciiz "Invalid move. Please try again.\n"
- 	 	
-.text
 
-.globl main
+.globl main 	 	
+.text
 
 main:
   addi $sp, $sp, -256 	# board; 
@@ -17,12 +16,12 @@ main:
   move $s0, $sp
   move $a0, $s0 
   
-  jal initializeBoard  # initializeBoard(board);
+  jal inicialializeBoard # initializeBoard(board);
   move $a0, $s0 				
   jal plantBombs 				 # placeBombs(board);
   
   begin_while:					 # while (gameActive) {
-  beqz $s1, end_while
+  beqz $s1, end_while   # branch se i ( $s1) == 0
   move $a0, $s0 
   li $a1, 0
   jal printBoard				 # printBoard(board,0); // Shows the board without bombs
@@ -33,7 +32,7 @@ main:
   
   li $v0, 5  						# scanf("%d", &row);
   syscall
-  move $s2, $v0
+  move $s2, $v0   #Em $s2 fica o numero da row digitada pelo usu?rio
   
   la $a0, msg_column
   li $v0, 4 						# printf("Enter the column for the move: ");
@@ -42,7 +41,7 @@ main:
   li $v0, 5 						# scanf("%d", &column);
 
   syscall
-  move $s3, $v0 
+  move $s3, $v0  #Em $s3 fica o numero da column digitada pelo usu?rio
   
   li $t0, SIZE
   blt $s2, $zero, else_invalid	#if (row >= 0 && row < SIZE && column >= 0 && column < SIZE) {
@@ -52,19 +51,22 @@ main:
   
   addi $sp, $sp, -4
   sw $s0, 0 ($sp)
-  move $a0, $s2
-  move $a1, $s3
+  
+  move $a0,$s0
+  move $a1, $s2  #row
+  move $a2, $s3  #column
   jal play
+  
   addi $sp, $sp, 4
-  bne $v0, $zero, else_if_main 	# if (!play(board, row, column)) {
-    li $s1, 0										# gameActive = 0;
+  bne $v0, $zero, else_if_main # Se o retorno da função play não for zero vai verificar a vitória	# if (!play(board, row, column)) {
+  li $s1, 0										# gameActive = 0;
   la $a0, msg_lose							# printf("Oh no! You hit a bomb! Game over.\n");
   li $v0, 4
   syscall
   j end_if_main
   
  else_if_main:
- 	move $a0, $s0
+  move $a0, $s0
   jal checkVictory							# else if (checkVictory(board)) {
   beq $v0, $zero, end_if_main
   la $a0, msg_win								# printf("Congratulations! You won!\n");

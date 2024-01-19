@@ -46,6 +46,10 @@ main:
   syscall
   move $s3, $v0  #Em $s3 fica o numero da column digitada pelo usuário
   
+ # move $a0, $s0 
+  #li $a1, 1    Para ver onde estão as bombas 9 Debug)
+  #jal printBoard
+  
   li $t0, SIZE
   blt $s2, $zero, else_invalid	#if (row >= 0 && row < SIZE && column >= 0 && column < SIZE) {
   bge $s2, $t0, else_invalid		
