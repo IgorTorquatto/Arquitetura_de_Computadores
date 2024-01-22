@@ -52,7 +52,7 @@ main:
   addi $sp, $sp, -4
   sw $s0, 0 ($sp)
   
-  move $a0,$s0
+  move $a0,$s0 #board
   move $a1, $s2  #row
   move $a2, $s3  #column
   jal play

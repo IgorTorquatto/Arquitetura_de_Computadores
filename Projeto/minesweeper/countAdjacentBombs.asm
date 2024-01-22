@@ -11,46 +11,55 @@ countAdjacentBombs:
 	move $s2,$a2 #column
 	
 	li $t0, 0  #contador = 0
-	subi $s3,$s1,1 # i = $s3
+	li $t1,0 # i = 0
+	subi $t1,$s1,1 #i =  row - 1  
 	
 	begin_for_i_it_count:
-	addi $t1, $s1,1  #row + 1;
-	bgt $s3, $t1, end_for_i_it_count
-	subi $s4,$s2,1  #criando o j   #se tá aqui é porque i <= row + 1
+	addi $t2, $s1,1  #row + 1;
+	bgt $t1, $t2, end_for_i_it_count #int i = row - 1; i <= row + 1; ++i  a única forma de sair desse laço for é se i > row + 1
 	
+	#se tá aqui é porque i <= row + 1 então temos que criar o laço do j
+	subi $s4,$s2,1  #criando o j    j = column - 1;
+	
+	#$t1 é o i $s4 é o j 
 	
 	begin_for_j_it_count:
-	addi $t1,$s2,1  #column +1
-	li $t2, SIZE
-	li $t3, -1
-	sll $t4,$s3,5 #multiplica a linha  por 8
-	sll $t5,$s4,2 #multiplica coluna por 4
-	add $t4,$t4,$t5
-	add $t4,$t4,$s0 #montando board[i][j]
+	addi $t3,$s2,1  #column +1
+	bgt $s4,$t3,end_for_j_it_count # se j > column + 1 fim do laço j
+	
+	# Se j <= column + 1
+	li $t4, SIZE
+	li $t5, -1
+	
+	sll $t6,$t1,5 #multiplica i  por 8
+	sll $t7,$s4,2 #multiplica j por 4
+	add $t8,$t6,$t7 #adiciona os dois
+	add $t9,$t8,$s0 #montando  board[i][j]
 	
 	
-	bgt $s4,$t1,end_for_j_it_count
-	blt $s3,$zero,fake_else_count   # i < 0
-	bge $s3,$t2,fake_else_count    # i>= size
+	blt $t1,$zero,fake_else_count   # i < 0
+	bge $t1,$t4,fake_else_count    # i>= size
 	blt $s4,$zero,fake_else_count   # j < 0
-	bge $s4,$t2,fake_else_count     # j>= size
-	bne $t4,$t3,fake_else_count   # board[i][j] != -1
+	bge $s4,$t4,fake_else_count     # j>= size
+	bne $t9,$t5,fake_else_count   # board[i][j] != -1
 	
-	addi $t0,$t0,1  #i >= 0 && i < SIZE && j >= 0 && j < SIZE && board[i][j] == -1 count ++
-	addi $s4,$s4,1
+	# Se chegou aqui então i >= 0 && i < SIZE && j >= 0 && j < SIZE && board[i][j] == -1
+	addi $t0,$t0,1  #adiciona contador
+	addi $s4,$s4,1 #adiciona j
 	j begin_for_j_it_count
 	
 	
 end_for_j_it_count:
-	addi $s3, $s3, 1  # i aumenta 1
+	addi $t1, $t1, 1  # i aumenta 1
   	j begin_for_i_it_count
 
 end_for_i_it_count:
-	move $v0,$t0
+	# retorna o valor do count e volta para o fluxo do programa em play.asm
+	move $v0,$t0  
   	restore_context
  	jr $ra 
  	
 fake_else_count:
-	addi $s4,$s4,1
+	addi $s4,$s4,1 #j++
 	j begin_for_j_it_count
 	
