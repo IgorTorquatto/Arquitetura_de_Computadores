@@ -13,16 +13,16 @@ play:
 	sll $t0,$s1,5 #multiplica a linha digitada pelo usu?rio por 8
 	sll $t1,$s2,2 #multiplica coluna por 4
 	add $t0,$t0,$t1 #soma os dois 
-	add $t0,$t0,$s0 #montando board[row][column] ao somar com o endereï¿½o base do tabuleiro
-	lw  $t0,0($t0)
+	add $s3,$t0,$s0 #montando &board[row][column] ao somar com o endereï¿½o base do tabuleiro
+	lw  $s4,0($s3) #montando board[row][column](conteúdo)
 	
 	# Se board[row][column] == -1 return 0 
 	li $t1,-1 # $t1 = -1
-	beq $t0,$t1,acertou_bomba  #board[row][column] == -1
+	beq $s4,$t1,acertou_bomba  #board[row][column] == -1
 	
 	#Senï¿½o , temos que checar se board[row][column] == -2
 	li $t1,-2
-	beq $t0,$t1,countAdj #board[row][column] == -2
+	beq $s4,$t1,countAdj #board[row][column] == -2
 	
 	j continuar_jogo  # Se board[row][column] nï¿½o for igual nem a -1 nem a -2 deve-se continuar o jogo retornando 1
 		
@@ -33,7 +33,7 @@ countAdj:
 	move $a2 , $s2 #column
 	jal countAdjacentBombs
 	move $t2, $v0  # countAdjacentBombs retorna um nï¿½mero, salva esse nï¿½mero em $t2 e depois guarda em board[row][column]
-	sw $t2,0($t0) 	#board[row][column] = x
+	sw $t2,0($s3) 	#board[row][column] = x
 	
 	beq $t2,$zero,revealCells  # Se  o retorno da funï¿½ï¿½o countAdjacentBombs for zero tem que chamar a funï¿½ï¿½o revealAdjacentCells passando os parï¿½metros
 

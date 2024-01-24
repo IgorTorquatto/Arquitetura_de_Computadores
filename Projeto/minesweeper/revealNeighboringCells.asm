@@ -31,13 +31,14 @@ revealNeighboringCells:
 	sll $t5,$t0,5 #multiplica i  por 8
 	sll $t6,$t2,2 #multiplica j por 4
 	add $t7,$t5,$t6 #adiciona os dois
-	add $t7,$t7,$s0 #montando  board[i][j]
+	add $s3,$t7,$s0 #montando  &board[i][j]
+	lw $s4,0($s3) #montando  board[i][j] (conteúdo)
 	
 	blt $t0,$zero, fake_else_j #i < 0
 	bge $t0,$t4, fake_else_j # i>=Size
 	blt $t2,$zero,fake_else_j # j < 0
 	bge $t2,$t4,fake_else_j # j>= size
-	bne $t7,$t8,fake_else_j  # board[i][j] != -2
+	bne $s4,$t8,fake_else_j  # board[i][j] != -2
 	
 	
 	#Se tá aqui então i >= 0 && i < SIZE && j >= 0 && j < SIZE && board[i][j] == -2
@@ -45,11 +46,11 @@ revealNeighboringCells:
 	move $a1, $s1 #row
 	move $a2 , $s2 #column
 	jal countAdjacentBombs
-	move $s4,$v0
-	sw $s4, 0 ($t7) #board[i][j] = x
+	move $t9,$v0
+	sw $t9, 0 ($s3) #board[i][j] = x
 	
 	
-	beq $s4,$zero,reveal
+	beq $t9,$zero,reveal
 	
 	j fake_else_j
 		

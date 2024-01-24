@@ -35,15 +35,16 @@ countAdjacentBombs:
 	#add $t6,$t6,$t1  
 	sll $t6,$t1,5  #multiplica i  por 8
 	sll $t7,$s4,2 #multiplica j por 4
-	add $t8,$t6,$t7 #adiciona os dois
-	add $t9,$t8,$s0 #montando  board[i][j]
+	add $t6,$t6,$t7 #adiciona os dois
+	add $s3,$t6,$s0 #montando  &board[i][j]
+	lw $s5,0($s3) #montando  board[i][j] (conteúdo)
 	
 	
 	blt $t1,$zero,fake_else_count   # i < 0
 	bge $t1,$t4,fake_else_count    # i>= size
 	blt $s4,$zero,fake_else_count   # j < 0
 	bge $s4,$t4,fake_else_count     # j>= size
-	bne $t9,$t5,fake_else_count   # board[i][j] != -1
+	bne $s5,$t5,fake_else_count   # board[i][j] != -1
 	
 	# Se chegou aqui entï¿½o i >= 0 && i < SIZE && j >= 0 && j < SIZE && board[i][j] == -1
 	addi $t0,$t0,1  #adiciona contador
