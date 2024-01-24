@@ -58,7 +58,7 @@ main:
   jal play
   
   addi $sp, $sp, 4
-  bne $v0, $zero, else_if_main # Se o retorno da função play não for zero vai verificar a vitória	# if (!play(board, row, column)) {
+  bne $v0, $zero, else_if_main # Se o retorno da funï¿½ï¿½o play nï¿½o for zero vai verificar a vitï¿½ria	# if (!play(board, row, column)) {
   li $s1, 0										# gameActive = 0;
   la $a0, msg_lose							# printf("Oh no! You hit a bomb! Game over.\n");
   li $v0, 4
@@ -74,12 +74,15 @@ main:
   syscall
   li $s1, 0											# gameActive = 0; // Game ends
   j end_if_main 
+  
   else_invalid:		
   la $a0, msg_invalid						# printf("Invalid move. Please try again.\n");
   li $v0, 4
   syscall
+  
   end_if_main:
   j begin_while
+  
   end_while:
   move $a0, $s0 
   li $a1, 1

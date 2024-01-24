@@ -16,22 +16,24 @@ countAdjacentBombs:
 	
 	begin_for_i_it_count:
 	addi $t2, $s1,1  #row + 1;
-	bgt $t1, $t2, end_for_i_it_count #int i = row - 1; i <= row + 1; ++i  a única forma de sair desse laço for é se i > row + 1
+	bgt $t1, $t2, end_for_i_it_count #int i = row - 1; i <= row + 1; ++i  a ï¿½nica forma de sair desse laï¿½o for ï¿½ se i > row + 1
 	
-	#se tá aqui é porque i <= row + 1 então temos que criar o laço do j
+	#se tï¿½ aqui ï¿½ porque i <= row + 1 entï¿½o temos que criar o laï¿½o do j
 	subi $s4,$s2,1  #criando o j    j = column - 1;
 	
-	#$t1 é o i $s4 é o j 
+	#$t1 ï¿½ o i $s4 ï¿½ o j 
 	
 	begin_for_j_it_count:
 	addi $t3,$s2,1  #column +1
-	bgt $s4,$t3,end_for_j_it_count # se j > column + 1 fim do laço j
+	bgt $s4,$t3,end_for_j_it_count # se j > column + 1 fim do laï¿½o j
 	
 	# Se j <= column + 1
 	li $t4, SIZE
 	li $t5, -1
 	
-	sll $t6,$t1,5 #multiplica i  por 8
+	#sll $t6,$t1,3 #multiplica i  por 6
+	#add $t6,$t6,$t1  
+	sll $t6,$t1,5  #multiplica i  por 8
 	sll $t7,$s4,2 #multiplica j por 4
 	add $t8,$t6,$t7 #adiciona os dois
 	add $t9,$t8,$s0 #montando  board[i][j]
@@ -43,7 +45,7 @@ countAdjacentBombs:
 	bge $s4,$t4,fake_else_count     # j>= size
 	bne $t9,$t5,fake_else_count   # board[i][j] != -1
 	
-	# Se chegou aqui então i >= 0 && i < SIZE && j >= 0 && j < SIZE && board[i][j] == -1
+	# Se chegou aqui entï¿½o i >= 0 && i < SIZE && j >= 0 && j < SIZE && board[i][j] == -1
 	addi $t0,$t0,1  #adiciona contador
 	addi $s4,$s4,1 #adiciona j
 	j begin_for_j_it_count
@@ -55,7 +57,7 @@ end_for_j_it_count:
 
 end_for_i_it_count:
 	# retorna o valor do count e volta para o fluxo do programa em play.asm
-	move $v0,$t0  
+	move $v0,$t0 
   	restore_context
  	jr $ra 
  	
