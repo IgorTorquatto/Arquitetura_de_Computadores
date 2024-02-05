@@ -89,4 +89,3 @@ main:
   jal printBoard								# printBoard(board,1);
   li $v0, 10
   syscall
-

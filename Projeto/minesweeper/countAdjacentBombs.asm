@@ -10,7 +10,7 @@ countAdjacentBombs:
 	move $s1,$a1 #row
 	move $s2,$a2 #column
 	
-	li $t0, 0  #contador = 0
+	li $s6, 0  #contador = 0
 	li $t1,0 # i = 0
 	subi $t1,$s1,1 #i =  row - 1  
 	
@@ -37,7 +37,7 @@ countAdjacentBombs:
 	sll $t7,$s4,2 #multiplica j por 4
 	add $t6,$t6,$t7 #adiciona os dois
 	add $s3,$t6,$s0 #montando  &board[i][j]
-	lw $s5,0($s3) #montando  board[i][j] (conteúdo)
+	lw $s5,0($s3) #montando  board[i][j] (conteï¿½do)
 	
 	
 	blt $t1,$zero,fake_else_count   # i < 0
@@ -47,7 +47,7 @@ countAdjacentBombs:
 	bne $s5,$t5,fake_else_count   # board[i][j] != -1
 	
 	# Se chegou aqui entï¿½o i >= 0 && i < SIZE && j >= 0 && j < SIZE && board[i][j] == -1
-	addi $t0,$t0,1  #adiciona contador
+	addi $s6,$s6,1  #adiciona contador
 	addi $s4,$s4,1 #adiciona j
 	j begin_for_j_it_count
 	
@@ -58,7 +58,7 @@ end_for_j_it_count:
 
 end_for_i_it_count:
 	# retorna o valor do count e volta para o fluxo do programa em play.asm
-	move $v0,$t0 
+	move $v0,$s6
   	restore_context
  	jr $ra 
  	

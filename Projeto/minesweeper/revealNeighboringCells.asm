@@ -9,60 +9,60 @@ revealNeighboringCells:
 	move $s1,$a1 #row
 	move $s2,$a2 #column
 	
-	li $t0,0
-	addi $t0, $s1,-1 #int i = row - 1
+	li $s5,0
+	addi $s5, $s1,-1 #int i = row - 1
 	
 	laco_i:
 	addi $t1,$s1,1 #row + 1
-	bgt $t0,$t1,final_laco_i # Se i >  row + 1 sai do laço de i
+	bgt $s5,$t1,final_laco_i # Se i >  row + 1 sai do laï¿½o de i
 	
-	# Se tá aqui então  i <= row + 1
+	# Se tï¿½ aqui entï¿½o  i <= row + 1
 	
-	addi $t2,$s2,-1 #int j = column - 1;
+	addi $s7,$s2,-1 #int j = column - 1;
 	
 	laco_j:
 	addi $t3,$s2,1 #column + 1
-	bgt $t2,$t3,final_laco_j
+	bgt $s7,$t3,final_laco_j
 	
-	# Se tá aqui então  j <= column + 1
+	# Se tï¿½ aqui entï¿½o  j <= column + 1
 	li $t4,SIZE
 	li $t8,-2
 	
-	sll $t5,$t0,5 #multiplica i  por 8
-	sll $t6,$t2,2 #multiplica j por 4
+	sll $t5,$s5,5 #multiplica i  por 8
+	sll $t6,$s7,2 #multiplica j por 4
 	add $t7,$t5,$t6 #adiciona os dois
 	add $s3,$t7,$s0 #montando  &board[i][j]
-	lw $s4,0($s3) #montando  board[i][j] (conteúdo)
+	lw $s4,0($s3) #montando  board[i][j] (conteï¿½do)
 	
-	blt $t0,$zero, fake_else_j #i < 0
-	bge $t0,$t4, fake_else_j # i>=Size
-	blt $t2,$zero,fake_else_j # j < 0
-	bge $t2,$t4,fake_else_j # j>= size
+	blt $s5,$zero, fake_else_j #i < 0
+	bge $s5,$t4, fake_else_j # i>=Size
+	blt $s7,$zero,fake_else_j # j < 0
+	bge $s7,$t4,fake_else_j # j>= size
 	bne $s4,$t8,fake_else_j  # board[i][j] != -2
 	
 	
-	#Se tá aqui então i >= 0 && i < SIZE && j >= 0 && j < SIZE && board[i][j] == -2
+	#Se tï¿½ aqui entï¿½o i >= 0 && i < SIZE && j >= 0 && j < SIZE && board[i][j] == -2
 	move $a0,$s0 #board
-	move $a1, $s1 #row
-	move $a2 , $s2 #column
+	move $a1, $s5 #i
+	move $a2 , $s7 #j
 	jal countAdjacentBombs
-	move $t9,$v0
-	sw $t9, 0 ($s3) #board[i][j] = x
+	move $s6,$v0
+	sw $s6, 0 ($s3) #board[i][j] = x
 	
 	
-	beq $t9,$zero,reveal
+	beq $s6,$zero,reveal
 	
 	j fake_else_j
 		
 reveal:
 	move $a0,$s0 #board
-	move $a1, $s1 #row
-	move $a2 , $s2 #column
+	move $a1, $s5 #i
+	move $a2 , $s7 #j
 	jal revealNeighboringCells	
 	
 	
 fake_else_j:
-	addi $t2,$t2,1 #j++
+	addi $s7,$s7,1 #j++
 	j laco_j
 		
 	
@@ -71,6 +71,6 @@ final_laco_i:
 	jr $ra
 	
 final_laco_j:
-	addi $t0,$t0,1 #i++
+	addi $s5,$s5,1 #i++
 	j laco_i
 	
